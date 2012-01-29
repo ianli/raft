@@ -6,6 +6,7 @@ It takes advantage of the fact that PHP, in itself,
 is already a good templating system.
 Building a big templating system on top of it is too much overhead.
 
+
 How RAFT Works
 --------------
 
@@ -16,14 +17,18 @@ and using the raft function.
 For example, here's a layout file (layout.php):
 
 ```php
-<?php include_once("raft.php"); ?>
 <html>
 <head>
   <title><?php echo raft("title"); ?></title>
 </head>
 <body>
   <h1><?= raft("title"); ?></h1>
+  
   <?php raft("content"); ?>
+  
+  <footer>
+    <?php raft("footer"); ?>
+  </footer>
 </body>
 </html>
 ```
@@ -61,9 +66,17 @@ function raft_title() {
 }
 ```
 
-**Method 4: begin_raft(key) ... end_raft(key)**
+**Method 4: rafting(key, value, ...)**
 
-Use `begin_raft(key)` in conjunction with `end_raft(key)`. Any output that occurs between these two functions becomes assigned to the RAFT value.
+Use the rafting(key, value, ...) function. The nice thing about this function is you can pass a variable number of value parameters, which are then concatenated together.
+
+```php
+rafting("title", "Hello ", "World", "!");
+```
+
+**Method 5: rafting(key) ... end_rafting(key)**
+
+There's a second way to use the rafting function. If you only pass a key to rafting, you can use it in conjunction with end_rafting. Any output that occurs between rafting and end_rafting becomes assigned to the RAFT value.
 
 ```php
 <?php rafting("title"); ?>
@@ -72,17 +85,26 @@ Use `begin_raft(key)` in conjunction with `end_raft(key)`. Any output that occur
 <?php end_rafting("title")?>
 ```
 
+
 ### Example
 
 The user creates a content page; again, in PHP.
    
 ```php
 <?php
+  include_once("php/raft.php");
+  
   $raft["title"] = "My Web Page.";
 
   function raft_content() {
     echo "Hello World!";
   }
+  
+  rafting("footer");
+  
+  echo "This is the footer";
+  
+  end_rafting("footer");
 
   include("layout.php");
 ?>
@@ -109,6 +131,12 @@ For more information on SemVer, please visit http://semver.org/.
 
 Versions
 --------
+
+**0.4.2**	- 2010-11-17
+
+- Added rafting and end_rafting.
+- Added variable parameters to rafting which are appended to the raft.
+- Removed begin_raft and end_raft.
 
 **0.4.1** -	2010-11-17
 

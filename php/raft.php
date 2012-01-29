@@ -12,7 +12,11 @@
  * Building a big templating system on top of it is too much overhead.
  *
  * Versions:
- * 0.4.1beta	2010-11-17
+ * 0.4.2	2010-11-17
+ * - Added rafting and end_rafting.
+ * - Added variable parameters to rafting which are appended to the raft.
+ * - Removed begin_raft and end_raft.
+ * 0.4.1	2010-11-17
  * - If the same id is used for begin_raft, the buffered content is appended.
  * - Added begin_raft and end_raft.
  * - Create $raft variable if it hasn't been set, so we don't have to check whether it exists.
@@ -28,21 +32,23 @@ if (!isset($raft)) {
 	$raft = array();
 }
 
-function begin_raft($id) {
+function rafting($id) {
 	global $raft;
 	
 	if (!array_key_exists($id, $raft)) {
 		$raft[$id] = "";
 	}
 	
-	if (func_num_args() == 2) {
-		ob_start(func_get_arg(1));
+	if (($num_args = func_num_args()) > 1) {
+		for ($i = 1; $i < $num_args; $i++) {
+			$raft[$id] .= func_get_arg($i);
+		}
 	} else {
 		ob_start();
 	}
 }
 
-function end_raft($id) {
+function end_rafting($id) {
 	global $raft;
 	$raft[$id] = ob_get_contents();
 	ob_end_clean();
