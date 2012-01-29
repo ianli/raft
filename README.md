@@ -6,42 +6,87 @@ It takes advantage of the fact that PHP, in itself,
 is already a good templating system.
 Building a big templating system on top of it is too much overhead.
 
-Here's how RAFT works:
+How RAFT Works
+--------------
 
-1. The user creates a layout in PHP by including raft.php
-   and using the raft function.
-   For example, here's a layout file (layout.php):
+### Creating a template
 
-    ```php
-    <?php include_once("raft.php"); ?>
-    <html>
-    <head>
-      <title><?php echo raft("title"); ?></title>
-    </head>
-    <body>
-      <?php raft("content"); ?>
-    </body>
-    </html>
-    ```
+The user creates a layout in PHP by including raft.php
+and using the raft function.
+For example, here's a layout file (layout.php):
 
-2. The user creates a content page; again, in PHP.
-   The user assigns values to an associative array $raft.
-   Or creates functions that start with "raft_".
-   For example:
+```php
+<?php include_once("raft.php"); ?>
+<html>
+<head>
+  <title><?php echo raft("title"); ?></title>
+</head>
+<body>
+  <h1><?= raft("title"); ?></h1>
+  <?php raft("content"); ?>
+</body>
+</html>
+```
+
+### Assigning RAFT values
+
+There are several ways to create RAFT values.
+In the following examples, we create a RAFT value for "title".
+
+**Method 1**
+
+Assign a value to the associated array variable `$raft`.
+
+```php
+$raft["title"] = "Hello World!";
+```
+
+**Method 2**
+
+Create a method prefixed with `raft_` that returns a value.
+
+```php
+function raft_title() {
+	return "Hello World!";
+}
+```
+
+**Method 3: Self-printing RAFT value**
+
+Create a method prefixed with `raft_`, but print the value instead of returning it.
+
+```php
+function raft_title() {
+	echo "Hello World!";
+}
+```
+
+**Method 4: begin_raft(key) ... end_raft(key)**
+
+Use `begin_raft(key)` in conjunction with `end_raft(key)`. Any output that occurs between these two functions becomes assigned to the RAFT value.
+
+```php
+<?php rafting("title"); ?>
+	Hello World!
+	<?= "I'm feeling great!" ?>
+<?php end_rafting("title")?>
+```
+
+### Example
+
+The user creates a content page; again, in PHP.
    
-    ```php
-    <?php
-      $raft["title"] = "My Web Page.";
+```php
+<?php
+  $raft["title"] = "My Web Page.";
 
-      function raft_content() {
-        echo "Hello World!";
-      }
+  function raft_content() {
+    echo "Hello World!";
+  }
 
-      include("layout.php");
-    ?>
-    ```
-
-3. **That's it!**
+  include("layout.php");
+?>
+```
 
 
 Versioning
@@ -65,15 +110,21 @@ For more information on SemVer, please visit http://semver.org/.
 Versions
 --------
 
-**0.3** - 2010-11-11
+**0.4.1** -	2010-11-17
+
+- If the same id is used for begin_raft, the buffered content is appended.
+- Added begin_raft and end_raft.
+- Create $raft variable if it hasn't been set, so we don't have to check whether it exists.
+
+**0.3.0** - 2010-11-11
 
 - Added check whether $raft is set before checking whether it has a key.
 
-**0.2** - 2010-11-09
+**0.2.0** - 2010-11-09
 
 - raft function always returns a value.
 
-**0.1** - 2010-11-08
+**0.1.0** - 2010-11-08
 
 - Started implementation.
 

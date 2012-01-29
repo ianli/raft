@@ -4,6 +4,7 @@
   <title><?php echo raft("title"); ?></title>
 </head>
 <body>
+  <h1><?= raft("title"); ?></h1>
   <?php raft("content"); ?>
 </body>
 </html>
