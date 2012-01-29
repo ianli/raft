@@ -43,6 +43,8 @@
  * 3. That's it!
  *
  * Versions:
+ * 0.3	2010-11-11
+ * Added check whether $raft is set before checking whether it has a key.
  * 0.2	2010-11-09
  * raft function always returns a value.
  * 0.1	2010-11-08
@@ -52,7 +54,7 @@
 function raft($id) {
 	global $raft;
 	
-	if (array_key_exists($id, $raft)) {
+	if (isset($raft) && array_key_exists($id, $raft)) {
 		// $id is $raft, so just print that.
 		return $raft[$id];
 	} else {

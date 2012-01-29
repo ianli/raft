@@ -41,7 +41,7 @@ Here's how RAFT works:
     ?>
     ```
 
-3. That's it!
+3. **That's it!**
 
 
 Versioning
@@ -64,6 +64,10 @@ For more information on SemVer, please visit http://semver.org/.
 
 Versions
 --------
+
+**0.3** - 2010-11-11
+
+- Added check whether $raft is set before checking whether it has a key.
 
 **0.2** - 2010-11-09
 
