@@ -27,7 +27,7 @@ For example, here's a layout file (layout.php):
   <?php raft("content"); ?>
   
   <footer>
-    <?php raft("footer"); ?>
+    <?= raft("footer"); ?>
   </footer>
 </body>
 </html>
