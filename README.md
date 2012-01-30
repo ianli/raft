@@ -1,114 +1,16 @@
 RAFT Ain't For Templating
 =========================
 
-RAFT is a simple implementation for templates.
-It takes advantage of the fact that PHP, in itself,
-is already a good templating system.
-Building a big templating system on top of it is too much overhead.
+RAFT is simple templating for PHP. 
+It strives for simplicity because building a big templating system 
+is too much overhead. 
+It takes advantage of the fact that PHP, in itself, is already a good templating system.
 
 
-How RAFT Works
---------------
+Demo
+----
 
-### Creating a template
-
-The user creates a layout in PHP by including raft.php
-and using the raft function.
-For example, here's a layout file (layout.php):
-
-```php
-<html>
-<head>
-  <title><?php echo raft("title"); ?></title>
-</head>
-<body>
-  <h1><?= raft("title"); ?></h1>
-  
-  <?php raft("content"); ?>
-  
-  <footer>
-    <?= raft("footer"); ?>
-  </footer>
-</body>
-</html>
-```
-
-### Assigning RAFT values
-
-There are several ways to create RAFT values.
-In the following examples, we create a RAFT value for "title".
-
-**Method 1**
-
-Assign a value to the associated array variable `$raft`.
-
-```php
-$raft["title"] = "Hello World!";
-```
-
-**Method 2**
-
-Create a method prefixed with `raft_` that returns a value.
-
-```php
-function raft_title() {
-	return "Hello World!";
-}
-```
-
-**Method 3: Self-printing RAFT value**
-
-Create a method prefixed with `raft_`, but print the value instead of returning it.
-
-```php
-function raft_title() {
-	echo "Hello World!";
-}
-```
-
-**Method 4: rafting(key, value, ...)**
-
-Use the rafting(key, value, ...) function. The nice thing about this function is you can pass a variable number of value parameters, which are then concatenated together.
-
-```php
-rafting("title", "Hello ", "World", "!");
-```
-
-**Method 5: rafting(key) ... end_rafting(key)**
-
-There's a second way to use the rafting function. If you only pass a key to rafting, you can use it in conjunction with end_rafting. Any output that occurs between rafting and end_rafting becomes assigned to the RAFT value.
-
-```php
-<?php rafting("title"); ?>
-	Hello World!
-	<?= "I'm feeling great!" ?>
-<?php end_rafting("title")?>
-```
-
-
-### Example
-
-The user creates a content page; again, in PHP.
-   
-```php
-<?php
-  include_once("php/raft.php");
-  
-  $raft["title"] = "My Web Page.";
-
-  function raft_content() {
-    echo "Hello World!";
-  }
-  
-  rafting("footer");
-  
-  echo "This is the footer";
-  
-  end_rafting("footer");
-
-  include("layout.php");
-?>
-```
+See a demo of RAFT at http://ianli.com/raft/
 
 
 Versioning
@@ -131,6 +33,15 @@ For more information on SemVer, please visit http://semver.org/.
 
 Versions
 --------
+
+**1.0.0** - 2011-01-30
+
+- Removed need for global variable `$raft`.
+- All assignments and retrieval of values are done through the function `raft()`.
+- Created `RAFT` class.
+- Templating can be done with `raft()` or a `RAFT` object. `raft()` is shorter.
+- Added support for nested keys, e.g., first.second.third
+- Replaced `rafting` and `end_rafting` functions with `raft("!BEGIN:key")` and `raft("!END:key")`
 
 **0.4.2**	- 2010-11-17
 
