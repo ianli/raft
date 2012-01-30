@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title></title>
+  <title>RAFT Ain't For Templating</title>
   
   <!-- UTF-8 (Unicode) encoding -->
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

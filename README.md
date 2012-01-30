@@ -34,7 +34,7 @@ For more information on SemVer, please visit http://semver.org/.
 Versions
 --------
 
-**1.0.0** - 2011-01-30
+**1.0.0** - 2012-01-30
 
 - Removed need for global variable `$raft`.
 - All assignments and retrieval of values are done through the function `raft()`.
